@@ -6,7 +6,7 @@
   <title>NIXZZON // Life Gamification Hub</title>
 
   <style>
-    /* 1. ШРИФТ DISKET MONO */
+    /* 1. ПОДКЛЮЧЕНИЕ ШРИФТА DISKET MONO */
     @font-face {
       font-family: 'Disket Mono';
       src: url('Disket-Mono-Regular.ttf') format('truetype'),
@@ -50,7 +50,7 @@
       position: relative;
     }
 
-    /* МИКРОЗЕРНИСТЫЙ ШУМ */
+    /* МИКРОЗЕРНИСТЫЙ ШУМ (NOISE) */
     .noise-overlay {
       position: fixed;
       inset: 0;
@@ -154,7 +154,7 @@
       transform: translateY(-2px);
     }
 
-    /* СВЕТОВОЙ БЛИК (ТОЛЬКО ДЛЯ YOUTUBE) */
+    /* LIGHT SWEEP (ТОЛЬКО НА YOUTUBE) */
     .sweep-effect {
       position: relative;
     }
@@ -226,7 +226,7 @@
       }
     }
 
-    /* СТАТИСТИКА */
+    /* МИНИ-ТАБЛИЦЫ СТАТИСТИКИ */
     .stat-badge-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -262,7 +262,7 @@
       margin-bottom: 14px;
     }
 
-    /* 3 РОЛИКА В БЛОКЕ YOUTUBE */
+    /* 3 РОЛИКА YOUTUBE */
     .yt-videos-row {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -458,7 +458,7 @@
       <!-- ЛЕВАЯ КОЛОНКА -->
       <div class="col-left">
 
-        <!-- YOUTUBE CHANNEL (СВЕТОВОЙ БЛИК SWEEP ТОЛЬКО ЗДЕСЬ) -->
+        <!-- YOUTUBE CHANNEL -->
         <div class="hud-card sweep-effect" style="padding: 18px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
             <div style="display: flex; align-items: center; gap: 8px;">
@@ -476,26 +476,26 @@
           <div class="yt-stats-grid">
             <div class="stat-item">
               <span class="stat-label">ПОДПИСЧИКИ</span>
-              <span id="yt-subs" class="stat-value" style="color: var(--color-red);">1.48K</span>
+              <span id="yt-subs" class="stat-value" style="color: var(--color-red);">...</span>
             </div>
             <div class="stat-item">
               <span class="stat-label">ПРОСМОТРЫ</span>
-              <span id="yt-views" class="stat-value">290K+</span>
+              <span id="yt-views" class="stat-value">...</span>
             </div>
             <div class="stat-item">
               <span class="stat-label">ЗАГРУЖЕНО</span>
-              <span id="yt-count" class="stat-value">88+</span>
+              <span id="yt-count" class="stat-value">...</span>
             </div>
             <div class="stat-item">
               <span class="stat-label">ТРАНСЛЯЦИИ</span>
-              <span class="stat-value" style="color: #00FF66;">READY</span>
+              <span id="yt-live-status" class="stat-value" style="color: #00FF66;">ONLINE</span>
             </div>
           </div>
 
           <!-- 3 РАЗДЕЛА: ВИДЕО, SHORTS, СТРИМ -->
           <div class="yt-videos-row">
 
-            <!-- 1. ВИДЕО -->
+            <!-- 1. ПОЛНОФОРМАТНОЕ ВИДЕО (/videos) -->
             <a id="yt-slot-video" href="https://www.youtube.com/channel/UCAPaXTUOnaSFHPQnB0zdc_A/videos" 
                target="_blank" onclick="claimXP('yt1', 35)" class="yt-video-card">
               <div>
@@ -504,15 +504,15 @@
                   <img id="yt-thumb-1" src="Photo_4.jpg" alt="Video">
                 </div>
                 <div id="yt-title-1" style="font-size: 10px; font-weight: 700; line-height: 1.3; height: 26px; overflow: hidden;">
-                  Свежий видеоролик
+                  Загрузка видео...
                 </div>
               </div>
               <div id="yt-date-1" style="font-size: 8px; color: var(--color-gray); margin-top: 6px;">
-                Смотреть в 4K
+                Вкладка Videos
               </div>
             </a>
 
-            <!-- 2. SHORTS -->
+            <!-- 2. SHORTS (/shorts) -->
             <a id="yt-slot-shorts" href="https://www.youtube.com/channel/UCAPaXTUOnaSFHPQnB0zdc_A/shorts" 
                target="_blank" onclick="claimXP('yt2', 35)" class="yt-video-card">
               <div>
@@ -521,15 +521,15 @@
                   <img id="yt-thumb-2" src="Photo_4.jpg" alt="Shorts">
                 </div>
                 <div id="yt-title-2" style="font-size: 10px; font-weight: 700; line-height: 1.3; height: 26px; overflow: hidden;">
-                  Быстрый шортс клип
+                  Загрузка shorts...
                 </div>
               </div>
               <div id="yt-date-2" style="font-size: 8px; color: var(--color-gray); margin-top: 6px;">
-                Вертикальный формат
+                Вкладка Shorts
               </div>
             </a>
 
-            <!-- 3. СТРИМ -->
+            <!-- 3. СТРИМ (/streams) -->
             <a id="yt-slot-stream" href="https://www.youtube.com/channel/UCAPaXTUOnaSFHPQnB0zdc_A/streams" 
                target="_blank" onclick="claimXP('yt3', 30)" class="yt-video-card">
               <div>
@@ -538,11 +538,11 @@
                   <img id="yt-thumb-3" src="Photo_4.jpg" alt="Stream">
                 </div>
                 <div id="yt-title-3" style="font-size: 10px; font-weight: 700; line-height: 1.3; height: 26px; overflow: hidden;">
-                  Запись стрима / LIVE
+                  Запись стрима / Live
                 </div>
               </div>
               <div id="yt-date-3" style="font-size: 8px; color: var(--color-gray); margin-top: 6px;">
-                Интерактив и гейминг
+                Вкладка Streams
               </div>
             </a>
 
@@ -579,11 +579,11 @@
                 </div>
                 <div class="stat-item">
                   <span class="stat-label">В СЕТИ</span>
-                  <span id="discord-online" class="stat-value">--</span>
+                  <span id="discord-online" class="stat-value">...</span>
                 </div>
                 <div class="stat-item">
                   <span class="stat-label">ВСЕГО</span>
-                  <span id="discord-total" class="stat-value">--</span>
+                  <span id="discord-total" class="stat-value">...</span>
                 </div>
               </div>
             </div>
@@ -712,7 +712,7 @@
     // -------------------------------------------------------------
     const sfxAudio = new Audio('ui-click-43196.mp3');
     sfxAudio.preload = 'auto';
-    sfxAudio.volume = 0.5; // 50% громкости
+    sfxAudio.volume = 0.5;
 
     function playCyberBeep() {
       if (sfxAudio) {
@@ -741,218 +741,240 @@
     }
 
     // -------------------------------------------------------------
-    // 2. DISCORD LIVE STATS (В РЕАЛЬНОМ ВРЕМЕНИ)
+    // 2. ИНИЦИАЛИЗАЦИЯ ИЗ КЕША LOCALSTORAGE
+    // -------------------------------------------------------------
+    if (localStorage.getItem('nix_dc_online')) document.getElementById('discord-online').innerText = localStorage.getItem('nix_dc_online');
+    if (localStorage.getItem('nix_dc_total')) document.getElementById('discord-total').innerText = localStorage.getItem('nix_dc_total');
+    if (localStorage.getItem('nix_yt_subs')) document.getElementById('yt-subs').innerText = localStorage.getItem('nix_yt_subs');
+    if (localStorage.getItem('nix_yt_views')) document.getElementById('yt-views').innerText = localStorage.getItem('nix_yt_views');
+    if (localStorage.getItem('nix_yt_count')) document.getElementById('yt-count').innerText = localStorage.getItem('nix_yt_count');
+    if (localStorage.getItem('nix_tg_subs')) document.getElementById('tg-subs-count').innerText = localStorage.getItem('nix_tg_subs');
+
+    // -------------------------------------------------------------
+    // 3. DISCORD LIVE STATS (БЕЗ КЕШИРОВАНИЯ)
     // -------------------------------------------------------------
     const DISCORD_CODE = 'rA4r4srRSS';
-    fetch(`https://discord.com/api/v9/invites/${DISCORD_CODE}?with_counts=true`)
+    fetch(`https://discord.com/api/v9/invites/${DISCORD_CODE}?with_counts=true&_t=${Date.now()}`, { cache: 'no-store' })
       .then(res => res.json())
       .then(data => {
         if (data.approximate_presence_count !== undefined) {
-          document.getElementById('discord-online').innerText = `${data.approximate_presence_count}`;
-          document.getElementById('discord-total').innerText = `${data.approximate_member_count}`;
+          const online = `${data.approximate_presence_count}`;
+          const total = `${data.approximate_member_count}`;
+          document.getElementById('discord-online').innerText = online;
+          document.getElementById('discord-total').innerText = total;
+          localStorage.setItem('nix_dc_online', online);
+          localStorage.setItem('nix_dc_total', total);
         }
       })
-      .catch(() => {
-        document.getElementById('discord-online').innerText = '40+';
-        document.getElementById('discord-total').innerText = '280+';
-      });
+      .catch(() => {});
 
     // -------------------------------------------------------------
-    // 3. TELEGRAM LIVE STATS (В РЕАЛЬНОМ ВРЕМЕНИ)
+    // 4. TELEGRAM LIVE STATS (БЕЗ КЕШИРОВАНИЯ)
     // -------------------------------------------------------------
-    fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://t.me/s/nixzzonbaza')}`)
+    fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://t.me/s/nixzzonbaza')}&_t=${Date.now()}`, { cache: 'no-store' })
       .then(res => res.json())
       .then(data => {
         if (data && data.contents) {
           const match = data.contents.match(/class="tgme_page_extra">([^<]+)<\/div>/i);
           if (match && match[1]) {
             const raw = match[1].replace(/subscribers|подписчиков|подписчика|members|участников/gi, '').trim();
-            if (raw) document.getElementById('tg-subs-count').innerText = raw;
+            if (raw) {
+              document.getElementById('tg-subs-count').innerText = raw;
+              localStorage.setItem('nix_tg_subs', raw);
+            }
           }
         }
       })
       .catch(() => {});
 
     // -------------------------------------------------------------
-    // 4. МУЛЬТИ-ШЛЮЗ ЗАГРУЗКИ ВИДЕО YOUTUBE (С ПАРСИНГОМ XML NAMESPACE)
+    // 5. РАЗДЕЛЬНОЕ ПОЛУЧЕНИЕ ВИДЕО, SHORTS И СТРИМОВ YOUTUBE
     // -------------------------------------------------------------
     const YT_CHANNEL_ID = 'UCAPaXTUOnaSFHPQnB0zdc_A';
-    const rssFeedUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${YT_CHANNEL_ID}`;
 
-    function renderYouTubeVideos(videos) {
-      if (!videos || videos.length === 0) return;
-
-      // Слот 1: Основное видео
-      if (videos[0]) {
-        document.getElementById('yt-title-1').innerText = videos[0].title;
-        document.getElementById('yt-title-1').title = videos[0].title;
-        document.getElementById('yt-thumb-1').src = videos[0].thumb;
-        document.getElementById('yt-slot-video').href = videos[0].link;
-        document.getElementById('yt-date-1').innerText = videos[0].date;
-      }
-
-      // Слот 2: Shorts
-      if (videos[1]) {
-        document.getElementById('yt-title-2').innerText = videos[1].title;
-        document.getElementById('yt-title-2').title = videos[1].title;
-        document.getElementById('yt-thumb-2').src = videos[1].thumb;
-        document.getElementById('yt-slot-shorts').href = videos[1].link.replace('watch?v=', 'shorts/');
-        document.getElementById('yt-date-2').innerText = videos[1].date;
-      } else if (videos[0]) {
-        document.getElementById('yt-thumb-2').src = videos[0].thumb;
-      }
-
-      // Слот 3: Стрим / LIVE
-      if (videos[2]) {
-        document.getElementById('yt-title-3').innerText = videos[2].title;
-        document.getElementById('yt-title-3').title = videos[2].title;
-        document.getElementById('yt-thumb-3').src = videos[2].thumb;
-        document.getElementById('yt-slot-stream').href = videos[2].link;
-        document.getElementById('yt-date-3').innerText = videos[2].date;
-      } else if (videos[0]) {
-        document.getElementById('yt-thumb-3').src = videos[0].thumb;
-      }
+    function setVideoSlot(slotNum, video, badgeText) {
+      if (!video) return;
+      document.getElementById(`yt-title-${slotNum}`).innerText = video.title;
+      document.getElementById(`yt-title-${slotNum}`).title = video.title;
+      document.getElementById(`yt-thumb-${slotNum}`).src = video.thumb;
+      document.getElementById(`yt-date-${slotNum}`).innerText = video.date || badgeText;
+      const slotLink = document.getElementById(slotNum === 1 ? 'yt-slot-video' : (slotNum === 2 ? 'yt-slot-shorts' : 'yt-slot-stream'));
+      slotLink.href = video.link;
     }
 
-    function parseXmlEntries(xmlString) {
-      const parser = new DOMParser();
-      const xml = parser.parseFromString(xmlString, "application/xml");
-      const entries = xml.querySelectorAll("entry");
-      if (!entries || entries.length === 0) return null;
-
-      const list = [];
-      entries.forEach(entry => {
-        const titleEl = entry.getElementsByTagName("title")[0];
-        const title = titleEl ? titleEl.textContent : "Видео NIXZZON";
-
-        let videoId = "";
-        const ytVid = entry.getElementsByTagName("yt:videoId")[0] || entry.getElementsByTagNameNS("*", "videoId")[0];
-        if (ytVid) {
-          videoId = ytVid.textContent.trim();
-        } else {
-          const idEl = entry.getElementsByTagName("id")[0];
-          if (idEl) videoId = idEl.textContent.replace(/.*yt:video:/, "").trim();
-        }
-
-        let link = videoId ? `https://www.youtube.com/watch?v=${videoId}` : `https://www.youtube.com/channel/${YT_CHANNEL_ID}`;
-        const linkEl = entry.getElementsByTagName("link")[0];
-        if (linkEl && linkEl.getAttribute("href")) link = linkEl.getAttribute("href");
-
-        let thumb = videoId ? `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg` : "Photo_4.jpg";
-        const mediaThumb = entry.getElementsByTagName("media:thumbnail")[0] || entry.getElementsByTagNameNS("*", "thumbnail")[0];
-        if (mediaThumb && mediaThumb.getAttribute("url")) thumb = mediaThumb.getAttribute("url");
-
-        let dateStr = "Свежее видео";
-        const pubEl = entry.getElementsByTagName("published")[0];
-        if (pubEl && pubEl.textContent) {
-          try {
-            dateStr = new Date(pubEl.textContent).toLocaleDateString("ru-RU");
-          } catch(e) {}
-        }
-
-        list.push({ title, videoId, link, thumb, date: dateStr });
-      });
-
-      return list;
-    }
-
-    async function loadYouTubeLive() {
-      // 1. Попытка через AllOrigins RAW
+    async function fetchProxy(targetUrl) {
+      // 1. AllOrigins RAW
       try {
-        const res = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(rssFeedUrl)}`);
-        if (res.ok) {
-          const text = await res.text();
-          const items = parseXmlEntries(text);
-          if (items && items.length > 0) {
-            renderYouTubeVideos(items);
-            return;
-          }
+        const res = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}&_t=${Date.now()}`, { cache: 'no-store' });
+        if (res.ok) return await res.text();
+      } catch (e) {}
+
+      // 2. AllOrigins GET
+      try {
+        const res2 = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}&_t=${Date.now()}`, { cache: 'no-store' });
+        if (res2.ok) {
+          const d = await res2.json();
+          if (d && d.contents) return d.contents;
         }
       } catch (e) {}
 
-      // 2. Попытка через AllOrigins GET JSON
+      // 3. CodeTabs
       try {
-        const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(rssFeedUrl)}`);
-        if (res.ok) {
-          const data = await res.json();
-          const items = parseXmlEntries(data.contents);
-          if (items && items.length > 0) {
-            renderYouTubeVideos(items);
-            return;
-          }
-        }
+        const res3 = await fetch(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(targetUrl)}&_t=${Date.now()}`, { cache: 'no-store' });
+        if (res3.ok) return await res3.text();
       } catch (e) {}
 
-      // 3. Попытка через RSS2JSON
-      try {
-        const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssFeedUrl)}`);
-        if (res.ok) {
-          const data = await res.json();
-          if (data.items && data.items.length > 0) {
-            const items = data.items.map(it => {
-              let vId = "";
-              const m = it.link ? it.link.match(/[?&]v=([^&]+)/) : null;
-              if (m) vId = m[1];
-              return {
-                title: it.title,
-                videoId: vId,
-                link: it.link,
-                thumb: it.thumbnail || (vId ? `https://i.ytimg.com/vi/${vId}/hqdefault.jpg` : "Photo_4.jpg"),
-                date: it.pubDate ? new Date(it.pubDate).toLocaleDateString("ru-RU") : "Свежее видео"
-              };
+      return null;
+    }
+
+    function extractFirstVideoFromTabHtml(html, defaultLink) {
+      if (!html) return null;
+      let videoId = "";
+      let title = "";
+
+      // Регулярные выражения для современного интерфейса YouTube
+      const vidMatch = html.match(/"videoId":"([a-zA-Z0-9_-]{11})"/);
+      if (vidMatch) videoId = vidMatch[1];
+
+      const titleMatch = html.match(/"title":\{"runs":\[\{"text":"([^"]+)"/i) || 
+                         html.match(/"headline":\{"simpleText":"([^"]+)"/i) ||
+                         html.match(/"title":\{"simpleText":"([^"]+)"/i);
+      if (titleMatch) title = titleMatch[1];
+
+      if (videoId) {
+        return {
+          title: title || "Смотреть выпуск",
+          thumb: `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`,
+          link: defaultLink.includes('shorts') ? `https://www.youtube.com/shorts/${videoId}` : `https://www.youtube.com/watch?v=${videoId}`,
+          date: 'Актуальный контент'
+        };
+      }
+      return null;
+    }
+
+    async function loadSeparatedVideos() {
+      const channelBase = `https://www.youtube.com/channel/${YT_CHANNEL_ID}`;
+
+      // 1. Загрузка из трех разделов
+      const [vHtml, sHtml, lHtml] = await Promise.all([
+        fetchProxy(`${channelBase}/videos`),
+        fetchProxy(`${channelBase}/shorts`),
+        fetchProxy(`${channelBase}/streams`)
+      ]);
+
+      const videoItem = extractFirstVideoFromTabHtml(vHtml, `${channelBase}/videos`);
+      const shortsItem = extractFirstVideoFromTabHtml(sHtml, `${channelBase}/shorts`);
+      const streamItem = extractFirstVideoFromTabHtml(lHtml, `${channelBase}/streams`);
+
+      if (videoItem) setVideoSlot(1, videoItem, 'Вкладка Videos');
+      if (shortsItem) setVideoSlot(2, shortsItem, 'Вкладка Shorts');
+      if (streamItem) setVideoSlot(3, streamItem, 'Вкладка Streams');
+
+      // 2. Если вкладка стримов пуста или не ответила — подключаем умный RSS-парсер
+      if (!videoItem || !shortsItem || !streamItem) {
+        try {
+          const rssText = await fetchProxy(`https://www.youtube.com/feeds/videos.xml?channel_id=${YT_CHANNEL_ID}`);
+          if (rssText) {
+            const xml = new DOMParser().parseFromString(rssText, "application/xml");
+            const entries = Array.from(xml.querySelectorAll("entry")).map(e => {
+              const t = e.getElementsByTagName("title")[0]?.textContent || "";
+              const idEl = e.getElementsByTagName("yt:videoId")[0] || e.getElementsByTagNameNS("*", "videoId")[0];
+              const vId = idEl?.textContent?.trim() || "";
+              const l = e.getElementsByTagName("link")[0]?.getAttribute("href") || "";
+              const dateEl = e.getElementsByTagName("published")[0]?.textContent;
+              const date = dateEl ? new Date(dateEl).toLocaleDateString("ru-RU") : "Свежее видео";
+              return { title: t, videoId: vId, link: l, thumb: `https://i.ytimg.com/vi/${vId}/hqdefault.jpg`, date };
             });
-            renderYouTubeVideos(items);
-            return;
-          }
-        }
-      } catch (e) {}
 
-      // 4. Попытка через CodeTabs Proxy
+            // Находим видео, которое не является стримом и шортсом
+            if (!videoItem) {
+              const fv = entries.find(x => !/(shorts|short|шортс)/i.test(x.title) && !/(стрим|stream|live|эфир)/i.test(x.title));
+              if (fv) setVideoSlot(1, fv, 'Вкладка Videos');
+            }
+            // Находим шортс
+            if (!shortsItem) {
+              const fs = entries.find(x => /(shorts|short|шортс)/i.test(x.title) || /(day\s*\d|клип)/i.test(x.title)) || entries[1];
+              if (fs) {
+                fs.link = `https://www.youtube.com/shorts/${fs.videoId}`;
+                setVideoSlot(2, fs, 'Вкладка Shorts');
+              }
+            }
+            // Находим именно стрим среди всех записей канала
+            if (!streamItem) {
+              const fl = entries.find(x => /(стрим|stream|live|эфир|трансляц|онлайн|🔴)/i.test(x.title));
+              if (fl) {
+                setVideoSlot(3, fl, 'Запись трансляции');
+              } else {
+                // Если недавних стримов в фиде нет — направляем карточку на раздел стримов
+                setVideoSlot(3, {
+                  title: 'Записи стримов и Live-эфиры',
+                  thumb: 'Шапка.jpg',
+                  link: `${channelBase}/streams`,
+                  date: 'Архив трансляций'
+                }, 'Архив трансляций');
+              }
+            }
+          }
+        } catch (err) {}
+      }
+    }
+    loadSeparatedVideos();
+
+    // -------------------------------------------------------------
+    // 6. СТАТИСТИКА YOUTUBE: ПОДПИСЧИКИ, ПРОСМОТРЫ, ЗАГРУЗКИ
+    // -------------------------------------------------------------
+    async function loadYouTubeAccurateStats() {
       try {
-        const res = await fetch(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(rssFeedUrl)}`);
-        if (res.ok) {
-          const text = await res.text();
-          const items = parseXmlEntries(text);
-          if (items && items.length > 0) {
-            renderYouTubeVideos(items);
+        const aboutHtml = await fetchProxy(`https://www.youtube.com/channel/${YT_CHANNEL_ID}/about`);
+        if (aboutHtml) {
+          // Подписчики
+          const subMatch = aboutHtml.match(/"subscriberCountText":\{[^}]*"simpleText":"([^"]+)"\}/i) ||
+                           aboutHtml.match(/"subscriberCountText":"([^"]+)"/i) ||
+                           aboutHtml.match(/"label":"([0-9\.,\sKkMm]+(?:подписчик[^\"]*|subscribers))"/i);
+          if (subMatch && subMatch[1]) {
+            const subs = subMatch[1].replace(/subscribers|подписчиков|подписчика/gi, '').trim();
+            if (subs) {
+              document.getElementById('yt-subs').innerText = subs;
+              localStorage.setItem('nix_yt_subs', subs);
+            }
+          }
+
+          // Просмотры за все время
+          const viewMatch = aboutHtml.match(/"viewCountText":\{[^}]*"simpleText":"([^"]+)"\}/i) ||
+                            aboutHtml.match(/"viewCountText":"([^"]+)"/i) ||
+                            aboutHtml.match(/([0-9\s\u00a0\.,]+)\s*(?:просмотр|views)/i);
+          if (viewMatch && viewMatch[1]) {
+            let views = viewMatch[1].replace(/views|просмотров|просмотра/gi, '').trim();
+            // Форматируем большое число в компактный вид (например 295K)
+            const cleanNum = parseInt(views.replace(/[^\d]/g, ''), 10);
+            if (!isNaN(cleanNum) && cleanNum > 1000) {
+              views = cleanNum >= 1000000 ? (cleanNum / 1000000).toFixed(1) + 'M' : Math.floor(cleanNum / 1000) + 'K';
+            }
+            if (views) {
+              document.getElementById('yt-views').innerText = views;
+              localStorage.setItem('nix_yt_views', views);
+            }
+          }
+
+          // Загруженные видео
+          const vidMatch = aboutHtml.match(/"videoCountText":\{[^}]*"simpleText":"([^"]+)"\}/i) ||
+                           aboutHtml.match(/"videosCountText":\{[^}]*"simpleText":"([^"]+)"\}/i) ||
+                           aboutHtml.match(/"videoCountText":"([^"]+)"/i) ||
+                           aboutHtml.match(/([0-9\s\u00a0\.,]+)\s*(?:видео|videos)/i);
+          if (vidMatch && vidMatch[1]) {
+            const count = vidMatch[1].replace(/videos|видео/gi, '').trim();
+            if (count) {
+              document.getElementById('yt-count').innerText = count;
+              localStorage.setItem('nix_yt_count', count);
+            }
           }
         }
       } catch (e) {}
     }
-    loadYouTubeLive();
+    loadYouTubeAccurateStats();
 
     // -------------------------------------------------------------
-    // 5. ПОЛУЧЕНИЕ СТАТИСТИКИ YOUTUBE КАНАЛА
-    // -------------------------------------------------------------
-    async function loadYouTubeStats() {
-      try {
-        const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(`https://www.youtube.com/channel/${YT_CHANNEL_ID}`)}`);
-        if (res.ok) {
-          const data = await res.json();
-          const html = data.contents;
-          if (html) {
-            const subMatch = html.match(/"subscriberCountText":\{[^}]*"simpleText":"([^"]+)"\}/) ||
-                             html.match(/"label":"([0-9\.,KkMm]+\s*(?:подписчик[^\"]*|subscribers))"/i);
-            if (subMatch && subMatch[1]) {
-              const subs = subMatch[1].replace(/subscribers|подписчиков|подписчика/gi, '').trim();
-              if (subs) document.getElementById('yt-subs').innerText = subs;
-            }
-
-            const vidMatch = html.match(/"videosCountText":\{[^}]*"simpleText":"([^"]+)"\}/) ||
-                             html.match(/"videoCountText":\{[^}]*"simpleText":"([^"]+)"\}/) ||
-                             html.match(/"label":"([0-9\.,KkMm]+\s*(?:видео|videos))"/i);
-            if (vidMatch && vidMatch[1]) {
-              const vids = vidMatch[1].replace(/videos|видео/gi, '').trim();
-              if (vids) document.getElementById('yt-count').innerText = vids;
-            }
-          }
-        }
-      } catch (e) {}
-    }
-    loadYouTubeStats();
-
-    // -------------------------------------------------------------
-    // 6. МЕХАНИКА ГЕЙМИФИКАЦИИ (XP & РАНГИ)
+    // 7. МЕХАНИКА ГЕЙМИФИКАЦИИ (XP & РАНГИ)
     // -------------------------------------------------------------
     let currentXP = 0;
     const maxXP = 500;

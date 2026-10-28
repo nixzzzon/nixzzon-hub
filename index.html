@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NIXZZON // Life Gamification Hub</title>
+
+  <style>
+    /* 1. ПОДКЛЮЧЕНИЕ ШРИФТА DISKET MONO */
+    @font-face {
+      font-family: 'Disket Mono';
+      src: url('Disket-Mono-Regular.ttf') format('truetype'),
+           url('DisketMono-Regular.ttf') format('truetype');
+      font-weight: 400;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Disket Mono';
+      src: url('Disket-Mono-Bold.ttf') format('truetype'),
+           url('DisketMono-Bold.ttf') format('truetype');
+      font-weight: 700;
+      font-style: normal;
+    }
+
+    /* 2. ПАЛИТРА */
+    :root {
+      --color-red: #FF0000;
+      --color-white: #FFFFFF;
+      --color-gray: #999999;
+      --color-dark-gray: #292929;
+      --color-black: #0D0D0D;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Disket Mono', monospace, sans-serif;
+    }
+
+    body {
+      background-color: var(--color-black);
+      background-image: url('2779781.jpg');
+      background-attachment: fixed;
+      background-position: center;
+      background-size: cover;
+      color: var(--color-white);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* МИКРОЗЕРНИСТЫЙ ШУМ (NOISE) */
+    .noise-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.045;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+
+    /* ШАПКА */
+    .banner-container {
+      position: relative;
+      width: 100%;
+      height: 240px;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      background: #000;
+    }
+
+    .banner-image {
+      width: 100%;
+      max-width: 4000px;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 30%;
+      display: block;
+    }
+
+    .banner-fade {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 35%, rgba(13, 13, 13, 0.6) 70%, var(--color-black) 100%);
+      pointer-events: none;
+    }
+
+    /* ПРОФИЛЬ */
+    .profile-section {
+      max-width: 1000px;
+      margin: 15px auto 0 auto;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 10;
+    }
+
+    .avatar-frame {
+      width: 96px;
+      height: 96px;
+      padding: 3px;
+      background: rgba(13, 13, 13, 0.9);
+      border: 1px solid var(--color-red);
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .avatar-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* HUD КАРТОЧКИ С BLUR */
+    .hud-card {
+      background: rgba(13, 13, 13, 0.85);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--color-dark-gray);
+      position: relative;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+      overflow: hidden;
+    }
+
+    .hud-card::before, .hud-card::after {
+      content: '';
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .hud-card::before {
+      top: 0; left: 0;
+      border-top: 2px solid var(--color-red);
+      border-left: 2px solid var(--color-red);
+    }
+    .hud-card::after {
+      bottom: 0; right: 0;
+      border-bottom: 2px solid var(--color-red);
+      border-right: 2px solid var(--color-red);
+    }
+
+    .hud-card:hover {
+      border-color: var(--color-red);
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.35);
+      transform: translateY(-2px);
+    }
+
+    /* LIGHT SWEEP (ТОЛЬКО ДЛЯ YOUTUBE) */
+    .sweep-effect {
+      position: relative;
+    }
+    .sweep-effect::after {
+      content: '';
+      position: absolute;
+      top: -100%;
+      left: -150%;
+      width: 18%;
+      height: 300%;
+      background: linear-gradient(
+        115deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0) 25%,
+        rgba(255, 255, 255, 0.08) 50%,
+        transparent 75%
+      );
+      transform: rotate(25deg);
+      animation: soft-sweep 7s infinite ease-in-out;
+      pointer-events: none;
+    }
+    @keyframes soft-sweep {
+      0% { left: -150%; }
+      22% { left: 160%; }
+      100% { left: 160%; }
+    }
+
+    /* CHROMATIC ABERRATIONS */
+    .glitch-title {
+      position: relative;
+      display: inline-block;
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--color-white);
+      transition: text-shadow 0.2s ease;
+    }
+    .glitch-title:hover {
+      text-shadow: 2px 0 var(--color-red), -2px 0 #00E5FF;
+    }
+
+    /* СЕТКА ХАБА (ВЫРАВНИВАНИЕ ПО ВЫСОТЕ) */
+    .hub-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+    @media (min-width: 900px) {
+      .hub-grid {
+        grid-template-columns: 1.8fr 1fr;
+      }
+      .col-left {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 18px;
+        height: 100%;
+      }
+      .col-subgrid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+        flex: 1;
+      }
+      .col-subgrid > .hud-card {
+        height: 100%;
+      }
+    }
+
+    /* МИНИ-ТАБЛИЦЫ СТАТИСТИКИ */
+    .stat-badge-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin-bottom: 12px;
+      background: rgba(0, 0, 0, 0.45);
+      padding: 8px;
+      border: 1px solid rgba(41, 41, 41, 0.8);
+    }
+    .stat-item {
+      text-align: center;
+    }
+    .stat-label {
+      font-size: 8px;
+      color: var(--color-gray);
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 2px;
+    }
+    .stat-value {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--color-white);
+    }
+
+    .yt-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.55);
+      border: 1px solid rgba(41, 41, 41, 0.9);
+      padding: 10px;
+      margin-bottom: 14px;
+    }
+
+    /* 3 РОЛИКА YOUTUBE */
+    .yt-videos-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .yt-video-card {
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid var(--color-dark-gray);
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .yt-video-card:hover {
+      border-color: var(--color-red);
+      box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+    }
+    .yt-video-thumb-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #111;
+      overflow: hidden;
+      margin-bottom: 8px;
+      border: 1px solid rgba(41, 41, 41, 0.8);
+    }
+    .yt-video-thumb-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s;
+    }
+    .yt-video-card:hover .yt-video-thumb-wrap img {
+      transform: scale(1.04);
+    }
+    .yt-type-badge {
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      font-size: 8px;
+      font-weight: 700;
+      padding: 2px 5px;
+      background: rgba(13, 13, 13, 0.9);
+      border: 1px solid var(--color-red);
+      color: var(--color-white);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      z-index: 2;
+    }
+
+    /* ПРАВАЯ ДЕКА SHORTS & REELS */
+    .vertical-deck {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 18px;
+      height: 100%;
+    }
+    .phone-mockup {
+      width: 100%;
+      flex: 1;
+      min-height: 180px;
+      max-height: 230px;
+      background: radial-gradient(circle at center, #180404 0%, #0d0d0d 85%);
+      border: 1px solid rgba(255, 0, 0, 0.4);
+      position: relative;
+      overflow: hidden;
+      margin: 12px 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 10px;
+    }
+    .phone-mockup::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--color-red);
+      box-shadow: 0 0 8px var(--color-red);
+      animation: phoneScan 3.5s infinite linear;
+    }
+    @keyframes phoneScan {
+      0% { top: 0%; opacity: 0.8; }
+      50% { top: 98%; opacity: 0.8; }
+      100% { top: 0%; opacity: 0.8; }
+    }
+
+    /* КНОПКИ */
+    .btn-red {
+      background: var(--color-red);
+      color: var(--color-white);
+      border: 1px solid var(--color-red);
+      text-transform: uppercase;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
+    .btn-red:hover {
+      background: var(--color-white);
+      color: var(--color-black);
+      border-color: var(--color-white);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--color-white);
+      border: 1px solid var(--color-dark-gray);
+      text-transform: uppercase;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
+    .btn-outline:hover {
+      border-color: var(--color-red);
+      color: var(--color-red);
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+    }
+    .btn-icon {
+      width: 15px;
+      height: 15px;
+      object-fit: contain;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="noise-overlay"></div>
+
+  <!-- ШАПКА -->
+  <header class="banner-container">
+    <img src="Шапка.jpg" alt="NIXZZON HEADER" class="banner-image">
+    <div class="banner-fade"></div>
+  </header>
+
+  <!-- ПРОФИЛЬ -->
+  <div class="profile-section">
+    <div class="avatar-frame">
+      <img src="Photo_4.jpg" alt="NIXZZON">
+    </div>
+
+    <div>
+      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 3px;">
+        <span style="font-size: 9px; color: var(--color-red); background: rgba(255,0,0,0.15); border: 1px solid var(--color-red); padding: 1px 6px; font-weight: 700;">
+          LIVE HUD
+        </span>
+        <span style="font-size: 10px; color: var(--color-gray);">ID: NIXZZON-990</span>
+      </div>
+      <h1 class="glitch-title">NIXZZON</h1>
+      <p style="font-size: 12px; color: var(--color-gray); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px;">
+        life gamification blogger
+      </p>
+    </div>
+  </div>
+
+  <!-- ОСНОВНОЙ КОНТЕНТ -->
+  <main style="max-width: 1000px; margin: 25px auto; padding: 0 20px; position: relative; z-index: 10;">
+
+    <!-- ПАНЕЛЬ ГЕЙМИФИКАЦИИ -->
+    <section class="hud-card" style="padding: 16px 20px; margin-bottom: 20px; border-color: rgba(255, 0, 0, 0.35);">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 11px;">
+        <span style="color: var(--color-gray);">ПРОГРЕСС ИССЛЕДОВАТЕЛЯ: <b id="xp-text" style="color: var(--color-white);">0 / 500 XP</b></span>
+        <span style="color: var(--color-red); font-weight: 700;"> РАНГ: <span id="rank-text">RECRUIT [LVL 1]</span></span>
+      </div>
+      <div style="width: 100%; height: 7px; background: var(--color-dark-gray); border: 1px solid #333; overflow: hidden;">
+        <div id="xp-bar" style="height: 100%; width: 0%; background: var(--color-red); box-shadow: 0 0 10px var(--color-red); transition: width 0.4s ease;"></div>
+      </div>
+      <div style="font-size: 10px; color: var(--color-gray); margin-top: 7px; display: flex; justify-content: space-between;">
+        <span>Кликайте по карточкам и получайте доступ к эксклюзивам</span>
+        <span style="color: var(--color-red);">+100 XP ЗА УЗЕЛ</span>
+      </div>
+    </section>
+
+    <!-- СИММЕТРИЧНАЯ СЕТКА -->
+    <div class="hub-grid">
+
+      <!-- ЛЕВАЯ КОЛОНКА (YOUTUBE + DISCORD + TELEGRAM) -->
+      <div class="col-left">
+
+        <!-- YOUTUBE BROADCAST DECK (ТОЛЬКО ЗДЕСЬ СВЕТОВОЙ БЛИК SWEEP) -->
+        <div class="hud-card sweep-effect" style="padding: 18px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="color: var(--color-red); font-size: 18px; font-weight: 700;">▶</span>
+              <h2 style="font-size: 14px; font-weight: 700; letter-spacing: 1px;">YOUTUBE BROADCAST DECK</h2>
+            </div>
+            <span style="font-size: 9px; background: var(--color-dark-gray); padding: 2px 6px;">+100 XP</span>
+          </div>
+
+          <p style="font-size: 11px; color: var(--color-gray); margin-bottom: 12px;">
+            геймификация х стримы х shorts
+          </p>
+
+          <!-- СТАТИСТИКА YOUTUBE -->
+          <div class="yt-stats-grid">
+            <div class="stat-item">
+              <span class="stat-label">ПОДПИСЧИКИ</span>
+              <span id="yt-subs" class="stat-value" style="color: var(--color-red);">1.48K</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">ПРОСМОТРЫ</span>
+              <span id="yt-views" class="stat-value">290K+</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">ЗАГРУЖЕНО</span>
+              <span id="yt-count" class="stat-value">88+</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">ТРАНСЛЯЦИИ</span>
+              <span class="stat-value" style="color: #00FF66;">READY</span>
+            </div>
+          </div>
+
+          <!-- 3 РАЗДЕЛА: ВИДЕО, SHORTS, СТРИМ -->
+          <div class="yt-videos-row">
+
+            <!-- 1. ПОЛНОФОРМАТНОЕ ВИДЕО -->
+            <a id="yt-slot-video" href="https://www.youtube.com/channel/UCAPaXTUOnaSFHPQnB0zdc_A/videos" 
+               target="_blank" onclick="claimXP('yt1', 35)" class="yt-video-card">
+              <div>
+                <div class="yt-video-thumb-wrap">
+                  <span class="yt-type-badge">ВИДЕО</span>
+                  <img id="yt-thumb-1" src="https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=400&auto=format&fit=crop" alt="Video">
+                </div>
+                <div id="yt-title-1" style="font-size: 10px; font-weight: 700; line-height: 1.3; height: 26px; overflow: hidden;">
+                  Свежий видеоролик канала
+                </div>
+              </div>
+              <div id="yt-date-1" style="font-size: 8px; color: var(--color-gray); margin-top: 6px;">
+                Смотреть в 4K
+              </div>
+            </a>
+
+            <!-- 2. SHORTS КЛИП -->
+            <a id="yt-slot-shorts" href="https://www.youtube.com/channel/UCAPaXTUOnaSFHPQnB0zdc_A/shorts" 
+               target="_blank" onclick="claimXP('yt2', 35)" class="yt-video-card">
+              <div>
+                <div class="yt-video-thumb-wrap">
+                  <span class="yt-type-badge" style="border-color: #FFF;">SHORTS</span>
+                  <img id="yt-thumb-2" src="https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=400&auto=format&fit=crop" alt="Shorts">
+                </div>
+                <div id="yt-title-2" style="font-size: 10px; font-weight: 700; line-height: 1.3; height: 26px; overflow: hidden;">
+                  Быстрый шортс клип
+                </div>
+              </div>
+              <div id="yt-date-2" style="font-size: 8px; color: var(--color-gray); margin-top: 6px;">
+                Вертикальный формат
+              </div>
+            </a>
+
+            <!-- 3. СТРИМ / LIVE -->
+            <a id="yt-slot-stream" href="https://www.youtube.com/channel/UCAPaXTUOnaSFHPQnB0zdc_A/streams" 
+               target="_blank" onclick="claimXP('yt3', 30)" class="yt-video-card">
+              <div>
+                <div class="yt-video-thumb-wrap">
+                  <span class="yt-type-badge" style="background: var(--color-red); border-color: var(--color-red);">СТРИМ</span>
+                  <img id="yt-thumb-3" src="https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=400&auto=format&fit=crop" alt="Stream">
+                </div>
+                <div id="yt-title-3" style="font-size: 10px; font-weight: 700; line-height: 1.3; height: 26px; overflow: hidden;">
+                  Запись стрима / LIVE
+                </div>
+              </div>
+              <div id="yt-date-3" style="font-size: 8px; color: var(--color-gray); margin-top: 6px;">
+                Интерактив и гейминг
+              </div>
+            </a>
+
+          </div>
+
+          <a href="https://www.youtube.com/channel/UCAPaXTUOnaSFHPQnB0zdc_A?sub_confirmation=1" 
+             target="_blank" onclick="claimXP('yt_all', 100)" class="btn-red" style="padding: 10px; font-size: 11px; width: 100%;">
+            ПОДПИСАТЬСЯ НА YOUTUBE
+          </a>
+        </div>
+
+        <!-- ПОД-СЕТКА: DISCORD И TELEGRAM (ВЫРАВНЕНЫ ПО ВЫСОТЕ) -->
+        <div class="col-subgrid">
+
+          <!-- DISCORD -->
+          <div class="hud-card" style="padding: 18px; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <img src="Bro Baza_Logo.jpg" alt="Bro Baza" style="width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--color-red); object-fit: cover;">
+                  <h2 style="font-size: 13px; font-weight: 700; letter-spacing: 0.5px;">DISCORD BRO BAZA</h2>
+                </div>
+                <span style="font-size: 9px; background: var(--color-dark-gray); padding: 2px 5px;">+100 XP</span>
+              </div>
+
+              <p style="font-size: 11px; color: var(--color-gray); margin-bottom: 12px; line-height: 1.4;">
+                Голосовые комнаты, совместный кооп, ивенты и общение.
+              </p>
+
+              <div class="stat-badge-grid">
+                <div class="stat-item">
+                  <span class="stat-label">СТАТУС</span>
+                  <span class="stat-value" style="color: #00FF66;">ONLINE</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-label">В СЕТИ</span>
+                  <span id="discord-online" class="stat-value">60</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-label">ВСЕГО</span>
+                  <span id="discord-total" class="stat-value">283</span>
+                </div>
+              </div>
+            </div>
+
+            <a href="https://discord.gg/rA4r4srRSS" target="_blank" onclick="claimXP('dc', 100)" 
+               class="btn-outline" style="padding: 10px; font-size: 11px; width: 100%;">
+              ВОЙТИ НА СЕРВЕР
+            </a>
+          </div>
+
+          <!-- TELEGRAM -->
+          <div class="hud-card" style="padding: 18px; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <img src="Logo_Circle_1.png" alt="Telegram" style="width: 22px; height: 22px; object-fit: contain;">
+                  <h2 style="font-size: 13px; font-weight: 700; letter-spacing: 0.5px;">TELEGRAM BAZA</h2>
+                </div>
+                <span style="font-size: 9px; background: var(--color-dark-gray); padding: 2px 5px;">+100 XP</span>
+              </div>
+
+              <p style="font-size: 11px; color: var(--color-gray); line-height: 1.4; margin-bottom: 12px;">
+                Авторский канал YouTube контент-мейкера c личными историями и эксклюзивным контентом
+              </p>
+
+              <div class="stat-badge-grid">
+                <div class="stat-item">
+                  <span class="stat-label">КАНАЛ</span>
+                  <span class="stat-value" style="color: var(--color-red);">PUBLIC</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-label">БРО</span>
+                  <span id="tg-subs-count" class="stat-value">BAZA</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-label">ПОСТЫ</span>
+                  <span class="stat-value" style="color: #00FF66;">LIVE</span>
+                </div>
+              </div>
+            </div>
+
+            <a href="https://t.me/nixzzonbaza" target="_blank" onclick="claimXP('tg', 100)" 
+               class="btn-red" style="padding: 10px; font-size: 11px; width: 100%;">
+              ВХОД В TELEGRAM
+            </a>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ПРАВАЯ КОЛОНКА: SHORTS & REELS (СИММЕТРИЧНО ПО ВЫСОТЕ) -->
+      <div class="hud-card vertical-deck">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span style="color: var(--color-red); font-size: 14px;">✦</span>
+              <h2 style="font-size: 13px; font-weight: 700; letter-spacing: 1px;">SHORTS & REELS</h2>
+            </div>
+            <span style="font-size: 9px; background: var(--color-dark-gray); padding: 2px 5px;">+100 XP</span>
+          </div>
+
+          <p style="font-size: 11px; color: var(--color-gray); line-height: 1.4; margin-bottom: 8px;">
+            яркие моменты через геймификацию игровых механик
+          </p>
+
+          <!-- HUD ЭКРАН 9:16 -->
+          <div class="phone-mockup">
+            <div style="display: flex; justify-content: space-between; font-size: 8px; color: var(--color-gray);">
+              <span>REC ● 60 FPS</span>
+              <span style="color: var(--color-red);">9:16 VERTICAL</span>
+            </div>
+
+            <div style="text-align: center; padding: 10px 0;">
+              <div style="width: 42px; height: 42px; border-radius: 50%; border: 1px dashed var(--color-red); margin: 0 auto 8px auto; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px rgba(255,0,0,0.4);">
+                <span style="color: var(--color-white); font-size: 16px;">⚡</span>
+              </div>
+              <div style="font-size: 11px; font-weight: 700; letter-spacing: 1px;">FAST-PACED FEED</div>
+              <div style="font-size: 8px; color: var(--color-gray); margin-top: 3px;">TIKTOK & REELS ENGINE</div>
+            </div>
+
+            <div style="display: flex; justify-content: space-around; font-size: 8px; border-top: 1px solid rgba(255,0,0,0.25); padding-top: 6px;">
+              <span>❤ CLIPS</span>
+              <span>💬 SOUNDS</span>
+              <span>⚡ VFX</span>
+            </div>
+          </div>
+
+          <!-- СТАТИСТИКА ФОРМАТА -->
+          <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px;">
+            <div style="display: flex; justify-content: space-between; background: rgba(0,0,0,0.5); padding: 6px 10px; border: 1px solid #222; font-size: 10px;">
+              <span style="color: var(--color-gray);">ФОРМАТ ПОТОКА:</span>
+              <span style="color: var(--color-white); font-weight: 700;">9:16 ULTRA-HD</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; background: rgba(0,0,0,0.5); padding: 6px 10px; border: 1px solid #222; font-size: 10px;">
+              <span style="color: var(--color-gray);">ДИНАМИКА:</span>
+              <span style="color: var(--color-red); font-weight: 700;">GAMEPLAY CUTS</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; background: rgba(0,0,0,0.5); padding: 6px 10px; border: 1px solid #222; font-size: 10px;">
+              <span style="color: var(--color-gray);">РЕГУЛЯРНОСТЬ:</span>
+              <span style="color: #00FF66; font-weight: 700;">DAILY ACTIVE</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- КНОПКИ С ЛОГОТИПАМИ TIKTOK И INSTAGRAM -->
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <a href="https://www.tiktok.com/@nixzzonsport" target="_blank" onclick="claimXP('tt', 50)" 
+             class="btn-outline" style="padding: 10px; font-size: 11px; width: 100%;">
+            <img src="tiktok.png" alt="TikTok" class="btn-icon">
+            <span>TIKTOK @nixzzonsport</span>
+          </a>
+          <a href="https://www.instagram.com/nixzzzzon" target="_blank" onclick="claimXP('ig', 50)" 
+             class="btn-outline" style="padding: 10px; font-size: 11px; width: 100%;">
+            <img src="Instagram.png" alt="Instagram" class="btn-icon">
+            <span>INSTAGRAM @nixzzzzon</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    // -------------------------------------------------------------
+    // 1. SFX ЗВУК КЛИКА
+    // -------------------------------------------------------------
+    const sfxAudio = new Audio('ui-click-43196.mp3');
+    sfxAudio.preload = 'auto';
+
+    function playCyberBeep() {
+      if (sfxAudio) {
+        sfxAudio.currentTime = 0;
+        const playPromise = sfxAudio.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {
+            try {
+              const ctx = new (window.AudioContext || window.webkitAudioContext)();
+              const osc = ctx.createOscillator();
+              const gain = ctx.createGain();
+              osc.type = 'sawtooth';
+              osc.frequency.setValueAtTime(320, ctx.currentTime);
+              osc.frequency.exponentialRampToValueAtTime(740, ctx.currentTime + 0.08);
+              gain.gain.setValueAtTime(0.06, ctx.currentTime);
+              gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.08);
+              osc.connect(gain);
+              gain.connect(ctx.destination);
+              osc.start();
+              osc.stop(ctx.currentTime + 0.08);
+            } catch (e) {}
+          });
+        }
+      }
+    }
+
+    // -------------------------------------------------------------
+    // 2. DISCORD LIVE STATS
+    // -------------------------------------------------------------
+    const DISCORD_CODE = 'rA4r4srRSS';
+    fetch(`https://discord.com/api/v9/invites/${DISCORD_CODE}?with_counts=true`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.approximate_presence_count !== undefined) {
+          document.getElementById('discord-online').innerText = `${data.approximate_presence_count}`;
+          document.getElementById('discord-total').innerText = `${data.approximate_member_count}`;
+        }
+      })
+      .catch(() => {});
+
+    // -------------------------------------------------------------
+    // 3. TELEGRAM STATS
+    // -------------------------------------------------------------
+    fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://t.me/s/nixzzonbaza')}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.contents) {
+          const doc = new DOMParser().parseFromString(data.contents, 'text/html');
+          const extra = doc.querySelector('.tgme_page_extra');
+          if (extra) {
+            const raw = extra.innerText.trim();
+            const num = raw.replace(/[^\d\w\.]/g, '');
+            if (num) document.getElementById('tg-subs-count').innerText = num;
+          }
+        }
+      })
+      .catch(() => {});
+
+    // -------------------------------------------------------------
+    // 4. МУЛЬТИ-ШЛЮЗ ПОЛУЧЕНИЯ 3 РОЛИКОВ YOUTUBE
+    // -------------------------------------------------------------
+    const YT_CHANNEL_ID = 'UCAPaXTUOnaSFHPQnB0zdc_A';
+    const rssFeedUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${YT_CHANNEL_ID}`;
+
+    function applyVideos(items) {
+      if (!items || items.length < 3) return;
+
+      // Слот 1: Видео
+      document.getElementById('yt-title-1').innerText = items[0].title;
+      document.getElementById('yt-title-1').title = items[0].title;
+      document.getElementById('yt-thumb-1').src = items[0].thumbnail;
+      document.getElementById('yt-slot-video').href = items[0].link;
+      document.getElementById('yt-date-1').innerText = items[0].date;
+
+      // Слот 2: Shorts
+      document.getElementById('yt-title-2').innerText = items[1].title;
+      document.getElementById('yt-title-2').title = items[1].title;
+      document.getElementById('yt-thumb-2').src = items[1].thumbnail;
+      document.getElementById('yt-slot-shorts').href = items[1].link.replace('watch?v=', 'shorts/');
+      document.getElementById('yt-date-2').innerText = items[1].date;
+
+      // Слот 3: Стрим
+      document.getElementById('yt-title-3').innerText = items[2].title;
+      document.getElementById('yt-title-3').title = items[2].title;
+      document.getElementById('yt-thumb-3').src = items[2].thumbnail;
+      document.getElementById('yt-slot-stream').href = items[2].link;
+      document.getElementById('yt-date-3').innerText = items[2].date;
+    }
+
+    async function loadYouTubeDeck() {
+      // 1-я попытка через rss2json
+      try {
+        const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssFeedUrl)}`);
+        const data = await res.json();
+        if (data.items && data.items.length >= 3) {
+          const list = data.items.slice(0, 3).map(v => ({
+            title: v.title,
+            thumbnail: v.thumbnail,
+            link: v.link,
+            date: new Date(v.pubDate).toLocaleDateString('ru-RU')
+          }));
+          applyVideos(list);
+          return;
+        }
+      } catch (e) {}
+
+      // 2-я попытка через allorigins proxy
+      try {
+        const res2 = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(rssFeedUrl)}`);
+        const data2 = await res2.json();
+        const xml = new DOMParser().parseFromString(data2.contents, "text/xml");
+        const entries = xml.querySelectorAll("entry");
+        if (entries && entries.length >= 3) {
+          const list = [];
+          for (let i = 0; i < 3; i++) {
+            const e = entries[i];
+            const vId = e.querySelector("videoId") ? e.querySelector("videoId").textContent : '';
+            list.push({
+              title: e.querySelector("title").textContent,
+              thumbnail: `https://i.ytimg.com/vi/${vId}/hqdefault.jpg`,
+              link: e.querySelector("link").getAttribute("href"),
+              date: new Date(e.querySelector("published").textContent).toLocaleDateString('ru-RU')
+            });
+          }
+          applyVideos(list);
+        }
+      } catch (err) {}
+    }
+    loadYouTubeDeck();
+
+    // -------------------------------------------------------------
+    // 5. XP ГЕЙМИФИКАЦИЯ
+    // -------------------------------------------------------------
+    let currentXP = 0;
+    const maxXP = 500;
+    const claimedActions = new Set();
+
+    function claimXP(key, amount) {
+      playCyberBeep();
+      if (!claimedActions.has(key)) {
+        claimedActions.add(key);
+        currentXP = Math.min(currentXP + amount, maxXP);
+
+        const bar = document.getElementById('xp-bar');
+        const xpText = document.getElementById('xp-text');
+        const rankText = document.getElementById('rank-text');
+
+        const percentage = (currentXP / maxXP) * 100;
+        bar.style.width = percentage + '%';
+        xpText.innerText = `${currentXP} / ${maxXP} XP`;
+
+        if (currentXP >= 500) {
+          rankText.innerText = 'CYBER ELITE [MAX]';
+          rankText.style.color = '#FFFFFF';
+          rankText.style.background = '#FF0000';
+          rankText.style.padding = '1px 5px';
+        } else if (currentXP >= 250) {
+          rankText.innerText = 'OPERATOR [LVL 2]';
+        }
+      }
+    }
+  </script>
+</body>
+</html>
